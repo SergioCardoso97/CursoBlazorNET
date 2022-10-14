@@ -1,0 +1,21 @@
+<input type="text" @bind-value="@message2"/>
+<input type="button" value="Clic aqui" @onclick="ChangeText"/>
+<div>
+    @message
+</div>
+@code
+{
+    [Parameter]
+    public string Message { get; set; }
+    string message = "Componente Blazor";
+    string message2 = "";
+    protected override async Task OnInitializedAsync()
+    {
+        message = Message;
+    }
+    
+    private void ChangeText()
+    {
+        message = message2;
+    }
+}
