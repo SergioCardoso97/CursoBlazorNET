@@ -1,6 +1,6 @@
 @using Entities
 @using Business
-
+@inject IJSRuntime _js
 <hr />
 <select class="form-control" @onchange="CategoryChanged">
     <option value="n">Ver Todos los Productos</option>
@@ -17,16 +17,18 @@
             <th>Nombre producto</th>
             <th>Descripción del producto.</th>
             <th>Categoria</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var product in products)
+        @foreach(var product in tempProducts)
         {
             <tr>
                 <td>@product.ProductId</td>
                 <td>@product.ProductName</td>
                 <td>@product.ProductDescription</td>
                 <td>@product.CategoryId</td>
+                <td><a class="mr-2 btn btn-primary" href="product/update/@product.ProductId">Actualizar</a> <button class="btn btn-danger"  onclick="DeleteProduct(@product)">Eliminar</button></td>
             </tr>
         }
     </tbody>
@@ -36,6 +38,7 @@
 @code
 {
     List<Product> products = new List<Product>();
+    List<Product> tempProducts = new List<Product>();
     List<Category> categories = new List<Category>();
     B_Category bCategory = new B_Category();
     B_Product bProduct = new B_Product();
@@ -43,21 +46,15 @@
     protected override async Task OnInitializedAsync()
     {
         products = bProduct.ProductList();
+        tempProducts = products;
         categories = bCategory.CategoryList();
     }
     private void CategoryChanged(ChangeEventArgs e)
     {
-        message = e.Value.ToString();
-        var id = e.Value.ToString();
-
-        if (id != "n")
-        {
-            tempProducts = products.Where(c => c.CategoryId == id).ToList();
-        }
-        else
-        {
-            tempProducts = products;
-        }
-
+        tempProducts = products.Where(x => x.CategoryId == e.Value.ToString()).ToList();
+    }
+    protected void DeleteProduct(Product product)
+    {
+        //bProduct.DeleteProduct(product);
     }
 }
