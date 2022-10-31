@@ -19,7 +19,7 @@ namespace DataAccess
         {
             if (!options.IsConfigured)
             {
-                options.UseSqlServer("Server=PL-674; Database=InventoryDb;User Id=sa; Password= Cecyt100!!;");
+                options.UseSqlServer("Server=DESKTOP-NLQ15UU\\SERVERSERGIO; Database=InventoryDb;User Id=sa; Password= Cecyt100!!;");
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

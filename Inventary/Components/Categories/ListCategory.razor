@@ -1,0 +1,45 @@
+@using Entities
+@using Business
+@inject IJSRuntime _js
+<table class="table table-dark table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Referencia</th>
+            <th>Nombre Categoria</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var category in tempCategorys)
+        {
+            <tr>
+                <td>@category.CategoryId</td>
+                <td>@category.CategoryName</td>
+                <td><a class="mr-2 btn btn-primary" href="category/update/@category.CategoryId">Actualizar</a> <button class="btn btn-danger"  onclick="DeleteCategory(@category)">Eliminar</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@message
+
+@code
+{
+    List<Category> categories = new List<Category>();
+    List<Category> tempCategorys = new List<Category>();
+    B_Category bCategory = new B_Category();
+    string message;
+    protected override async Task OnInitializedAsync()
+    {
+        categories = bCategory.CategoryList();
+        tempCategorys = categories;
+        categories = bCategory.CategoryList();
+    }
+    private void CategoryChanged(ChangeEventArgs e)
+    {
+        tempCategorys = categories.Where(x => x.CategoryId == e.Value.ToString()).ToList();
+    }
+    protected void DeleteCategory(Category category)
+    {
+        //bCategory.DeleteCategory(category);
+    }
+}

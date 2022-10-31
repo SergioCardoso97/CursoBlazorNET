@@ -18,6 +18,13 @@ namespace Business
                 return db.Warehouses.ToList();
             }
         }
+        public Warehouse WarehouseById(string id)
+        {
+            using (var db = new InventaryContext())
+            {
+                return db.Warehouses.ToList().LastOrDefault(x => x.WarehouseId == id);
+            }
+        }
         public void CreatedWarehouse(Warehouse oWarehouse)
         {
             using (var db = new InventaryContext())

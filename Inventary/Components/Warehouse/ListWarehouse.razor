@@ -1,0 +1,42 @@
+@using Entities
+@using Business
+@inject IJSRuntime _js
+<table class="table table-dark table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Referencia</th>
+            <th>Nombre Bodega</th>
+            <th>Dirección Bodega.</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var warehouse in tempWarehouses)
+        {
+            <tr>
+                <td>@warehouse.WarehouseId</td>
+                <td>@warehouse.WarehouseName</td>
+                <td>@warehouse.WarehouseAddress</td>
+                <td><a class="mr-2 btn btn-primary" href="warehouse/update/@warehouse.WarehouseId">Actualizar</a> <button class="btn btn-danger"  onclick="DeleteWarehouse(@warehouse)">Eliminar</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@message
+
+@code
+{
+    List<Warehouse> warehouses = new List<Warehouse>();
+    List<Warehouse> tempWarehouses = new List<Warehouse>();
+    B_Warehouse bWarehouse = new B_Warehouse();
+    string message;
+    protected override async Task OnInitializedAsync()
+    {
+        warehouses = bWarehouse.WarehouseList();
+        tempWarehouses = warehouses;
+    }
+    protected void DeleteWarehouse(Warehouse warehouse)
+    {
+        //bWarehouse.DeleteWarehouse(warehouse);
+    }
+}
