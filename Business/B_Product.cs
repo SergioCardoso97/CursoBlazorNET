@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using DataAccess;
+using Microsoft.EntityFrameworkCore;
 namespace Business
 {
     public class B_Product
@@ -13,7 +14,7 @@ namespace Business
         {
             using (var db = new InventaryContext())
             {
-                return db.Products.ToList();
+                return db.Products.Include(x => x.Category).ToList();
             }
         }
          public Product ProductById( string id)

@@ -13,7 +13,7 @@
         </InputSelect>
     </div>
     <div class="form-group">
-        <label>Producto</label>
+        <label>Producto:</label>
         <InputSelect class="form-control" @bind-Value="oStorage.ProductId">
             <option value="">Seleccione una Producto</option>
             @foreach (var product in products)
@@ -22,8 +22,11 @@
             }
         </InputSelect>
     </div>
+    <input type="button" value="almacenar producto" @onclick="SaveStorage" class="btn btn-primary mt-2"/>
 </EditForm>
-
+<div class="text-center h4">
+    @message
+</div>
 @code
 {
     Storage oStorage = new Storage();
@@ -31,6 +34,8 @@
     List<Product> products = new List<Product>();
     B_Warehouse bWarehouse = new B_Warehouse();
     B_Product bProduct = new B_Product();
+    B_Storage bStorage = new B_Storage();
+    string message;
 
     protected override async Task OnInitializedAsync()
     {
@@ -38,5 +43,21 @@
         products = bProduct.ProductList();
 
     }
+    private void SaveStorage()
+    {
+        oStorage.StorageId = $"{oStorage.WarehouseId} - {oStorage.ProductId}";
+        if (!bStorage.IsProductInWarehouse(oStorage.StorageId))
+        {
+            oStorage.LastUpdate = DateTime.Now;
+            bStorage.CreatedStorage(oStorage);
+            message = "Producto Alamacenado";
+        }
+        else
+        {
+            message = "Producto ya existe en la bodega";
+        }
+       
+    }
+
 }
 
